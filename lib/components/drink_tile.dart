@@ -5,7 +5,8 @@ import '../models/drink.dart';
 // ignore: must_be_immutable
 class DrinkTile extends StatelessWidget {
   final Drink drink;
-  void Function()? onTap;
+
+  final void Function()? onTap;
   final Widget trailings;
   DrinkTile({
     super.key,
@@ -24,7 +25,21 @@ class DrinkTile extends StatelessWidget {
             color: Colors.brown[100], borderRadius: BorderRadius.circular(12)),
         child: ListTile(
           title: Text(drink.name),
-          subtitle: Text(drink.price),
+          subtitle: RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: '${drink.qty} / ',
+                  style: const TextStyle(color: Colors.black, fontSize: 16),
+                ),
+                TextSpan(
+                  text: '\$${drink.price}',
+                  style: const TextStyle(
+                      color: Colors.blue, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
           leading: Image.asset(drink.imagePath),
           trailing: trailings,
         ),

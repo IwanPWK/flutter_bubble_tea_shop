@@ -63,7 +63,8 @@ class _OrderPageState extends State<OrderPage> {
 
   //add to cart
   void addToCart() {
-    Provider.of<BubbleTeaShop>(context, listen: false).addToCart(widget.drink);
+    Provider.of<BubbleTeaShop>(context, listen: false)
+        .addToCart(widget.drink, finalPrice, quantity);
 
     // direct user back to shop page
     Navigator.pop(context);
