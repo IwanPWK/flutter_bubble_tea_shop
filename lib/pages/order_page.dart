@@ -130,6 +130,7 @@ class _OrderPageState extends State<OrderPage> {
               Row(
                 children: [
                   FloatingActionButton(
+                    heroTag: 'decrement',
                     onPressed: decrementQuantity,
                     child: const Icon(
                       Icons.remove,
@@ -140,6 +141,7 @@ class _OrderPageState extends State<OrderPage> {
                     style: const TextStyle(fontSize: 24),
                   ),
                   FloatingActionButton(
+                    heroTag: 'increment',
                     onPressed: incrementQuantity,
                     child: const Icon(
                       Icons.add,
