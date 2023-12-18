@@ -12,23 +12,35 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  int quantity = 0;
+  late double drinkPrice;
+  double finalTopping = 0;
+  double finalPrice = 0;
+  double priceSweet = 0.1;
+  double priceIce = 0.1;
+  double pricePearl = 0.1;
+  @override
+  initState() {
+    super.initState();
+    drinkPrice = double.parse(widget.drink.price);
+  }
+
+  int quantity = 1;
   //customize sweetness
-  double sweetValue = 0.5;
+  double sweetValue = 0;
   void customizeSweet(double newValue) {
     setState(() {
       sweetValue = newValue;
     });
   }
 
-  double iceValue = 0.5;
+  double iceValue = 0;
   void customizeIce(double newValue) {
     setState(() {
       iceValue = newValue;
     });
   }
 
-  double pearlValue = 0.5;
+  double pearlValue = 0;
   void customizePearl(double newValue) {
     setState(() {
       pearlValue = newValue;
@@ -42,7 +54,7 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void decrementQuantity() {
-    if (quantity > 0) {
+    if (quantity > 1) {
       setState(() {
         quantity--;
       });
@@ -64,8 +76,20 @@ class _OrderPageState extends State<OrderPage> {
             ));
   }
 
+  double calculateFinalPrice() {
+    finalTopping = (sweetValue * priceSweet) +
+        (iceValue * priceIce) +
+        (pearlValue * pricePearl);
+    setState(() {
+      finalPrice = quantity * (drinkPrice + finalTopping);
+    });
+    return finalPrice;
+  }
+
   @override
   Widget build(BuildContext context) {
+    // print('harge ${drinkPrices.toString()}');
+    finalPrice = calculateFinalPrice();
     return Scaffold(
       appBar: AppBar(title: Text(widget.drink.name)),
       backgroundColor: Colors.brown[200],
@@ -76,6 +100,10 @@ class _OrderPageState extends State<OrderPage> {
           height: 180,
           width: 180,
         ),
+
+        const SizedBox(height: 20),
+
+        Text('\$${finalPrice.toStringAsFixed(2)}'),
 
         //sliders to customize drink
         Padding(
@@ -89,9 +117,11 @@ class _OrderPageState extends State<OrderPage> {
                   const SizedBox(width: 100, child: Text('Sweet')),
                   Expanded(
                     child: Slider(
+                      min: 0,
+                      max: 5,
                       value: sweetValue,
                       label: sweetValue.toString(),
-                      divisions: 4,
+                      divisions: 5,
                       onChanged: (value) => customizeSweet(value),
                     ),
                   ),
@@ -104,9 +134,11 @@ class _OrderPageState extends State<OrderPage> {
                   const SizedBox(width: 100, child: Text('Ice')),
                   Expanded(
                     child: Slider(
+                      min: 0,
+                      max: 5,
                       value: iceValue,
                       label: iceValue.toString(),
-                      divisions: 4,
+                      divisions: 5,
                       onChanged: (value) => customizeIce(value),
                     ),
                   ),
@@ -119,15 +151,18 @@ class _OrderPageState extends State<OrderPage> {
                   const SizedBox(width: 100, child: Text('Pearls')),
                   Expanded(
                     child: Slider(
+                      min: 0,
+                      max: 5,
                       value: pearlValue,
                       label: pearlValue.toString(),
-                      divisions: 4,
+                      divisions: 5,
                       onChanged: (value) => customizePearl(value),
                     ),
                   ),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FloatingActionButton(
                     heroTag: 'decrement',
